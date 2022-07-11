@@ -21,13 +21,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // set background color and title over the action bar
         val actionBar = supportActionBar
         actionBar?.title = ("GFG | SwipeToRefresh")
         actionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#0F9D58")))
 
+        // init recycler view
         rv = findViewById(R.id.rv)
         swipeRefreshLayout = findViewById(R.id.refresh_layout)
 
+        // add random courses to the list
         listOfCourse.add(
             CourseModel(
                 courseImage = R.drawable.course1_image,
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = rvAdapter
 
+        // add 2 second delay before the course is added so that it mimic the network call
         swipeRefreshLayout.setOnRefreshListener {
             Handler().postDelayed({
                 addNewCourse()
@@ -119,7 +123,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // this method will add new course to the course list
     private fun addNewCourse() {
+        // list of images to be chosen randomly for newly added course
         val listOfImages = listOf(
             R.drawable.course1_image,
             R.drawable.course2_image,
@@ -128,6 +134,7 @@ class MainActivity : AppCompatActivity() {
             R.drawable.course5_image
         )
 
+        // list of course name that can be chosen randomly for newly added course
         val listOfCourseName = listOf(
             "Android Developer",
             "FullStack Developer",
@@ -135,6 +142,7 @@ class MainActivity : AppCompatActivity() {
             "Frontend Developer"
         )
 
+        // this will create a new course randomly
         val courseModel = CourseModel(
             coursePrice = 2000,
             courseName = listOfCourseName[Random.nextInt(listOfCourseName.size)],
@@ -142,6 +150,7 @@ class MainActivity : AppCompatActivity() {
             courseDes = "This is the course description...."
         )
 
+        // add the newly created course at the top of the list and update recycler view
         listOfCourse.add(0,courseModel)
         swipeRefreshLayout.isRefreshing = false
         rvAdapter.notifyDataSetChanged()
